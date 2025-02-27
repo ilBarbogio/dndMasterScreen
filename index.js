@@ -210,8 +210,8 @@ function toggleShadow(ev){
 function startDrawingUnshadows(ev){
   if(!dmData.isDraggingUnshadows){
     dmData.isDraggingUnshadows=true
-    let x=ev.clientX
-    let y=ev.clientY
+    let x=ev.offsetX
+    let y=ev.offsetY
     dmData.currentUnshadow=[x,y,0,0]
 
     shadowCanvas.addEventListener("mousemove",dragUnshadow)
@@ -222,8 +222,8 @@ function startDrawingUnshadows(ev){
 
 function dragUnshadow(ev){{
   if(dmData.isDraggingUnshadows){
-    let x=ev.clientX
-    let y=ev.clientY
+    let x=ev.offsetX
+    let y=ev.offsetY
     dmData.currentUnshadow=[
       dmData.currentUnshadow[0],
       dmData.currentUnshadow[1],
@@ -236,7 +236,7 @@ function dragUnshadow(ev){{
 }}
 
 function stopDrawingUnshadow(ev){
-  if(dmData.currentUnshadow){
+  if(dmData.currentUnshadow && (dmData.currentUnshadow[2]>=unshadowRectRadius || dmData.currentUnshadow[3]>=unshadowRectRadius)){
     unshadows.push(dmData.currentUnshadow)
   }
   dmData.isDraggingUnshadows=false
@@ -411,15 +411,21 @@ function drawUnshadows(){
     ctx.fillRect(0,0,...dims)
 
     for(let un of unshadows){
+      let ordered=[
+        un[2]>0?un[0]:un[0]+un[2],
+        un[3]>0?un[1]:un[1]+un[3],
+        Math.abs(un[2]),
+        Math.abs(un[3]),
+      ]
       let imgData=ctx.getImageData(
-        un[0]-unshadowRectRadius,un[1]-unshadowRectRadius,
-        un[2]+2*unshadowRectRadius,un[3]+2*unshadowRectRadius,
+        ordered[0]-unshadowRectRadius,ordered[1]-unshadowRectRadius,
+        ordered[2]+2*unshadowRectRadius,ordered[3]+2*unshadowRectRadius,
       )
       for(let i=0; i<imgData.data.length;i=i+4){
         imgData.data[i+3]=imgData.data[i+3]*.5
       }
       ctx.putImageData(imgData,
-        un[0]-unshadowRectRadius,un[1]-unshadowRectRadius)
+        ordered[0]-unshadowRectRadius,ordered[1]-unshadowRectRadius)
       ctx.clearRect(...un)
     }
     if(mode=="dm" && dmData.currentUnshadow){
