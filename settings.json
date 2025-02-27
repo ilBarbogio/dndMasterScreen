@@ -1,0 +1,7 @@
+{
+  "cellSize":20,
+  "pawns":[
+    {"kind":"orc","image":"orc.png"}
+  ],
+  "maps":[{"filename":"dungeon.png"}]
+}

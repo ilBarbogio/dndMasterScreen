@@ -1,0 +1,136 @@
+*{
+  margin:0;
+  padding:0;
+}
+body{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  overflow: auto;
+}
+button{
+  user-select: none;
+}
+
+.space{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:scroll;
+
+  &.setup{
+    visibility:hidden; 
+  }
+
+  .pawns{
+    position:absolute;
+    top:0;
+    left:0;
+
+    &.deactivated{
+      pointer-events:none;
+    }
+  
+    .pawn{
+      position:absolute;
+      top:100px;
+      left:100px;
+      width:10px;
+      height:10px;
+      border-radius: 15%;
+      background-color: blueviolet;
+      background-size:cover;
+    }
+  }
+
+
+  &.dm{
+    visibility:hidden;
+
+    .map-element{
+      width:fit-content;
+      padding:.25em .5em;
+      background-color: antiquewhite;
+      border-radius:.5em;
+      cursor:pointer;
+    }
+
+    .buttons{
+      position:fixed;
+      top:.5em;
+      left:.5em;
+      z-index:20;
+
+      display:flex;
+      gap:2em;
+
+      button{
+        padding:.25em .5em;
+        &.selected{
+          background-color: burlywood;
+        }
+      }
+
+      .pawn-buttons{
+        display:flex;
+        gap:.5em;
+
+        .add-button{
+          width:2em;
+          height:2em;
+          border-radius:.25em;
+          background-size:cover;
+        }
+      }
+    }
+
+    .pawns{
+      .pawn{
+        z-index:30;
+      }
+    }
+
+    canvas{
+      &.map{
+        z-index:0;
+      }
+      &.shadow{
+        z-index:10;
+      }
+    }
+  }
+  &.player{
+    visibility:hidden;
+
+    .pawns{
+      .pawn{
+        z-index:5;
+      }
+    }
+
+    canvas{
+      &.map{
+        z-index:0;
+      }
+      &.shadow{
+        z-index:10;
+      }
+    }
+  }
+
+  &.visible{
+    visibility:visible;
+  }
+
+
+  canvas{
+    position:absolute;
+    top:0;
+    left:0;
+  }
+}
+

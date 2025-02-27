@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diendi</title>
+  <link rel="stylesheet" href="./index.css"/>
+</head>
+<body>
+  <div class="space setup visible">
+    <button  class="open-ply-mode" onclick="openPlayer()">Avvia la partita</button>
+    <!-- <button class="dm-mode" disabled onclick="switchSpace('dm')">diemme</button>
+    <button  class="ply-mode" onclick="switchSpace('player')">giocatore</button>
+    <span id="handshaking-message">Aprire due tab di questa pagina prima di cominciare</span> -->
+  </div>
+  
+  <div class="space dm"></div>
+
+  <div class="space player">
+    <h3>In attesa che il diemme scelga una mappa</h3>
+  </div>
+
+  <template id="dm-map">
+    <canvas class="map"></canvas>
+    <canvas class="shadow"></canvas>
+    <div class="buttons">
+      <button onclick="toggleShadow(event)">shadow</button>
+      <div class="pawn-buttons"></div>
+    </div>
+    <div class="pawns"></div>
+  </template>
+
+  <template id="ply-map">
+    <canvas class="map"></canvas>
+    <canvas class="shadow"></canvas>
+    <div class="pawns"></div>
+  </template>
+
+  <script src="./index.js"></script>
+</body>
+</html>
