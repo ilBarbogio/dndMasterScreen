@@ -14,6 +14,9 @@ let dmData={
   mapName:undefined,
   shadowFill:"#00000060",
   shadowBorderFill:"#00000030",
+
+  deletingPawns:false,
+
   drawingUnshadows:false,
   isDraggingUnshadows:false,
   currentUnshadow:undefined,
@@ -152,7 +155,7 @@ function createAddButtons(pawns){
     btn.classList.add("add-button")
     btn.style.backgroundImage=`url("./assets/${p.image}")`
     btn.addEventListener("click",(ev)=>{
-      addPawn(ev.target.offsetLeft,ev.target.offsetTop+50,p.kind,p.image)
+      addPawn(60,65,p.kind,p.image)
     })
     container.append(btn)
   }
@@ -161,7 +164,6 @@ function createAddButtons(pawns){
 function loadGame(save){
   const data=JSON.parse(localStorage.getItem(save))
   console.log("LOAD")
-  console.log(data)
   cellSize=data.cellSize
   dmData.mapName=data.mapName
   unshadows=data.unshadows
@@ -206,6 +208,7 @@ function downloadSavegame(){
 
 //shadows
 function toggleShadow(ev){
+  if(!dmData.deletingPawns){
   dmData.drawingUnshadows=!dmData.drawingUnshadows
   if(dmData.drawingUnshadows){
     ev.target.classList.add("selected")
@@ -218,6 +221,7 @@ function toggleShadow(ev){
     shadowCanvas.removeEventListener("mousedown",startDrawingUnshadows)
     pawnContainer.classList.remove("deactivated")
   }
+}
 }
 
 function startDrawingUnshadows(ev){
@@ -263,6 +267,27 @@ function stopDrawingUnshadow(ev){
 }
 
 //pawns
+function toggleDeletingPawns(ev){
+  if(!dmData.drawingUnshadows){
+    dmData.deletingPawns=!dmData.deletingPawns
+    if(dmData.deletingPawns){
+      ev.target.classList.add("selected")
+
+      for(let p of pawnContainer.querySelectorAll(".pawn")) p.addEventListener("click",removePawn)
+    }else{
+      ev.target.classList.remove("selected")
+      
+      for(let p of pawnContainer.querySelectorAll(".pawn")) p.removeEventListener("click",removePawn)
+    }
+  }
+}
+function removePawn(ev){
+  if(dmData.deletingPawns){
+    ev.target.remove()
+
+    transferPawns()
+  }
+}
 function addPawn(x,y,kind,image=""){
   const pawn=document.createElement("div")
   pawn.classList.add("pawn")
@@ -281,7 +306,7 @@ function addPawn(x,y,kind,image=""){
 function setupPawnListeners(){
   currentPawn=undefined
   pawnContainer.addEventListener("mousedown",async ev=>{
-    if(ev.target && ev.target.classList.contains("pawn") && !document.pointerLockElement){
+    if(ev.target && ev.target.classList.contains("pawn") && !document.pointerLockElement && !dmData.deletingPawns){
       await ev.target.requestPointerLock()
       pawnContainer.addEventListener("mousemove",dragPawn)
       pawnContainer.addEventListener("mouseup",stopDraggingPawn)
@@ -293,9 +318,9 @@ function dragPawn(ev){
     document.pointerLockElement.style.left=`${document.pointerLockElement.offsetLeft+ev.movementX}px`
     document.pointerLockElement.style.top=`${document.pointerLockElement.offsetTop+ev.movementY}px`
     transferPawns()
-  }else stopDraggingPawn()
+  }else stopDraggingPawn(ev)
 }
-function stopDraggingPawn(){
+function stopDraggingPawn(ev){
   document.exitPointerLock()
   pawnContainer.removeEventListener("mousemove",dragPawn)
   pawnContainer.removeEventListener("mouseup",stopDraggingPawn)
@@ -386,7 +411,6 @@ function transferPawns(){
   if(mode=="dm"){
     const transferablePawns=[]
     for(let p of pawnContainer.querySelectorAll(".pawn")){
-      let rect=p.getBoundingClientRect()
       transferablePawns.push({
         x:p.offsetLeft,
         y:p.offsetTop,

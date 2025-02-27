@@ -9,9 +9,6 @@
 <body>
   <div class="space setup visible">
     <button  class="open-ply-mode" onclick="openPlayer()">Avvia la partita</button>
-    <!-- <button class="dm-mode" disabled onclick="switchSpace('dm')">diemme</button>
-    <button  class="ply-mode" onclick="switchSpace('player')">giocatore</button>
-    <span id="handshaking-message">Aprire due tab di questa pagina prima di cominciare</span> -->
   </div>
   
   <div class="space dm"></div>
@@ -24,10 +21,11 @@
     <canvas class="map"></canvas>
     <canvas class="shadow"></canvas>
     <div class="buttons">
-      <span>
-        <button onclick="downloadSavegame()">⥥</button>
+      <div class="fn-buttons">
+        <button onclick="downloadSavegame()">💾</button>
         <button onclick="toggleShadow(event)">shadow</button>
-      </span>
+        <button onclick="toggleDeletingPawns(event)">🗑</button>
+      </div>
       <div class="pawn-buttons"></div>
     </div>
     <div class="pawns"></div>

@@ -63,6 +63,7 @@ button{
     .map-element{
       width:fit-content;
       padding:.25em .5em;
+      margin:.5em;
       background-color: antiquewhite;
       border-radius:.5em;
       cursor:pointer;
@@ -84,11 +85,23 @@ button{
         }
       }
 
+      .fn-buttons{
+        display:flex;
+        flex-wrap: nowrap;
+        gap:.25em;
+        height:2em
+      }
+
       .pawn-buttons{
         display:flex;
         gap:.5em;
+        width:80vw;
+        height:2.5em;
+        flex-wrap: nowrap;
+        overflow-x: auto;
 
         .add-button{
+          flex-shrink: 0;
           width:2em;
           height:2em;
           border-radius:.25em;
