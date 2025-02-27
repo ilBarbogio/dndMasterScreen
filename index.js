@@ -186,9 +186,22 @@ function saveGame(){
       image:p.dataset.image
     })
   }
-  console.log("SAVE")
-  console.log(data)
+  
   localStorage.setItem(dmData.mapName,JSON.stringify(data))
+}
+function downloadSavegame(){
+  if(dmData.mapName){
+    const data=localStorage.getItem(dmData.mapName)
+    const blob=new Blob([data],{type:"application/json"})
+    const url=URL.createObjectURL(blob)
+
+    let a=document.createElement("a")
+    a.href=url
+    let d=new Date()
+    a.setAttribute("download",`${dmData.mapName.split(".")[0]}_${d.getDate().toString().padStart(2,"0")}${(d.getMonth()+1).toString().padStart(2,"0")}${d.getFullYear()}_${d.getHours().toString().padStart(2,"0")}${d.getMinutes().toString().padStart(2,"0")}`)
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 }
 
 //shadows

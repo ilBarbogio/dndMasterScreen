@@ -23,7 +23,16 @@ button{
   overflow:scroll;
 
   &.setup{
-    visibility:hidden; 
+    visibility:hidden;
+
+    button{
+      width:fit-content;
+      padding:.25em .5em;
+      margin:.5em;
+      background-color: antiquewhite;
+      border-radius:.5em;
+      cursor:pointer;
+    }
   }
 
   .pawns{
