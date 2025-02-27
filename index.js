@@ -388,8 +388,8 @@ function transferPawns(){
     for(let p of pawnContainer.querySelectorAll(".pawn")){
       let rect=p.getBoundingClientRect()
       transferablePawns.push({
-        x:rect.x,
-        y:rect.y,
+        x:p.offsetLeft,
+        y:p.offsetTop,
         kind:p.dataset.kind,
         image:p.style.backgroundImage
       })
