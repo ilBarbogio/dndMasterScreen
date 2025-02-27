@@ -411,13 +411,16 @@ function drawUnshadows(){
     ctx.fillRect(0,0,...dims)
 
     for(let un of unshadows){
+      let imgData=ctx.getImageData(
+        un[0]-unshadowRectRadius,un[1]-unshadowRectRadius,
+        un[2]+2*unshadowRectRadius,un[3]+2*unshadowRectRadius,
+      )
+      for(let i=0; i<imgData.data.length;i=i+4){
+        imgData.data[i+3]=imgData.data[i+3]*.5
+      }
+      ctx.putImageData(imgData,
+        un[0]-unshadowRectRadius,un[1]-unshadowRectRadius)
       ctx.clearRect(...un)
-      // ctx.fillStyle=mode=="dm"?dmData.shadowBorderFill:plyData.shadowBorderFill
-      // ctx.fillRect(...un)
-      // ctx.clearRect(
-      //   un[0]+unshadowRectRadius, un[1]+unshadowRectRadius,
-      //   un[2]-2*unshadowRectRadius, un[3]-2*unshadowRectRadius,
-      // )
     }
     if(mode=="dm" && dmData.currentUnshadow){
       ctx.strokeStyle="lime"
